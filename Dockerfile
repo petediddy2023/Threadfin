@@ -72,6 +72,13 @@ RUN apt-get update && apt-get install -y libjson-perl
 COPY zap2xml.pl zap2xml.pl
 RUN chmod 744 zap2xml.pl zap2xml.pl
 
+#add cron
+RUN apt-get update && apt-get install -y cron
+COPY cronfile /etc/cron.d/cronfile
+RUN chmod 0644 /etc/cron.d/cronfile
+RUN crontab /etc/cron.d/cronfile
+CMD ["cron", "-f"] 
+
 # Set binary permissions
 RUN chmod +rx $THREADFIN_BIN/threadfin
 RUN mkdir $THREADFIN_HOME/cache
