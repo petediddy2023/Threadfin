@@ -3,18 +3,8 @@
 FROM golang:1.18 AS builder
 
 # Download the source code
-RUN apt-get update && apt-get install -y git
+RUN apt-get update && apt-get install -y git && apt-get install -y perl
 RUN git clone https://github.com/Threadfin/Threadfin.git /src
-
-# Perl for zap2xml.pl
-RUN apk add --no-cache \
-  perl \
-  perl-http-cookies \
-  perl-lwp-useragent-determined \
-  perl-json \
-  perl-json-xs \
-  perl-lwp-protocol-https \
-  perl-gd
 
 WORKDIR /src
 
