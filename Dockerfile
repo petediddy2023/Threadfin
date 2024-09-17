@@ -6,6 +6,16 @@ FROM golang:1.18 AS builder
 RUN apt-get update && apt-get install -y git
 RUN git clone https://github.com/Threadfin/Threadfin.git /src
 
+# Perl for zap2xml.pl
+RUN apk add --no-cache \
+  perl \
+  perl-http-cookies \
+  perl-lwp-useragent-determined \
+  perl-json \
+  perl-json-xs \
+  perl-lwp-protocol-https \
+  perl-gd
+
 WORKDIR /src
 
 RUN git checkout main
@@ -63,6 +73,9 @@ RUN mkdir -p $THREADFIN_BIN
 
 # Copy built binary from builder image
 COPY --chown=${THREADFIN_UID} --from=builder [ "/src/threadfin", "${THREADFIN_BIN}/" ]
+
+#copy zap2xml.pl
+COPY zap2xml.pl zap2xml.pl
 
 # Set binary permissions
 RUN chmod +rx $THREADFIN_BIN/threadfin
