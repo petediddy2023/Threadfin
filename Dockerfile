@@ -3,7 +3,7 @@
 FROM golang:1.18 AS builder
 
 # Download the source code
-RUN apt-get update && apt-get install -y git && apt-get install -y perl
+RUN apt-get update && apt-get install -y git && apt-get install -y perl && apt-get install libjson-perl
 RUN git clone https://github.com/Threadfin/Threadfin.git /src
 
 WORKDIR /src
@@ -66,10 +66,14 @@ COPY --chown=${THREADFIN_UID} --from=builder [ "/src/threadfin", "${THREADFIN_BI
 
 #copy zap2xml.pl
 COPY zap2xml.pl zap2xml.pl
+RUN chmod 744 zap2xml.pl zap2xml.pl
 
 # Set binary permissions
 RUN chmod +rx $THREADFIN_BIN/threadfin
 RUN mkdir $THREADFIN_HOME/cache
+
+#add cache directory for zap2xml
+RUN mkdir $THREADFIN_HOME/cache/zap2xml
 
 # Create working directories for Threadfin
 RUN mkdir $THREADFIN_CONF
