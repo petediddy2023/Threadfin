@@ -79,6 +79,9 @@ RUN chmod 0644 /etc/cron.d/cronfile
 RUN crontab /etc/cron.d/cronfile
 CMD ["cron", "-f"] 
 
+#add editor
+RUN apt-get update && apt-get install nano
+
 # Set binary permissions
 RUN chmod +rx $THREADFIN_BIN/threadfin
 RUN mkdir $THREADFIN_HOME/cache
