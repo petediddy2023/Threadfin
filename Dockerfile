@@ -4,6 +4,7 @@ FROM golang:1.18 AS builder
 
 # Download the source code
 RUN apt-get update && apt-get install -y git
+# Add perl json module
 RUN apt-get update && apt-get install -y libjson-perl
 RUN git clone https://github.com/Threadfin/Threadfin.git /src
 
